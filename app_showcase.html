@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Showcase - Meu App Android</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .screenshot {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .screenshot:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .download-btn {
+            transition: all 0.3s ease;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .screenshot-gallery::-webkit-scrollbar {
+            height: 8px;
+        }
+        .screenshot-gallery::-webkit-scrollbar-thumb {
+            background: #60a5fa;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-blue-950 to-blue-900 text-white min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-5xl w-full mx-auto space-y-12">
+        <!-- Header -->
+        <header class="text-center space-y-6">
+            <img src="https://via.placeholder.com/120" alt="Logo do App" class="mx-auto rounded-2xl shadow-lg">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight">Meu App Android</h1>
+            <p class="tagline text-lg md:text-xl text-blue-200 max-w-2xl mx-auto">
+                Transforme sua rotina com um aplicativo rápido, intuitivo e cheio de recursos incríveis.
+            </p>
+            <a id="downloadLink" href="#" class="download-btn inline-block bg-green-500 text-white px-8 py-3 rounded-full font-semibold text-lg shadow-md hover:bg-green-600">
+                Baixar Agora
+            </a>
+        </header>
+
+        <!-- Screenshots -->
+        <section class="space-y-6">
+            <h2 class="text-3xl md:text-4xl font-semibold text-center">Veja o App em Ação</h2>
+            <div class="screenshot-gallery flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4">
+                <!-- Preenchido dinamicamente -->
+            </div>
+        </section>
+
+        <!-- Details -->
+        <section class="space-y-6">
+            <h2 class="text-3xl md:text-4xl font-semibold text-center">Detalhes do Aplicativo</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="description bg-white/10 backdrop-blur-lg p-6 rounded-xl border border-white/20">
+                    <h3 class="text-xl font-semibold mb-4">Sobre o App</h3>
+                    <p class="text-blue-100">
+                        Meu App Android é projetado para simplificar sua vida...
+                    </p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-lg p-6 rounded-xl border border-white/20">
+                    <h3 class="text-xl font-semibold mb-4">Informações Técnicas</h3>
+                    <ul class="info space-y-2 text-blue-100">
+                        <li><strong>Versão:</strong> 1.2.3</li>
+                        <li><strong>Tamanho:</strong> 25 MB</li>
+                        <li><strong>Compatibilidade:</strong> Android 6.0+</li>
+                        <li><strong>Desenvolvedor:</strong> xAI Team</li>
+                        <li><strong>Preço:</strong> Gratuito (com compras no app)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-sm text-blue-300 py-6">
+            <p>© 2025 xAI Team. Feito com paixão e inovação.</p>
+        </footer>
+    </div>
+
+    <!-- Script para Interatividade e Dados -->
+    <script>
+        window.onload = () => {
+            const appData = JSON.parse(localStorage.getItem('appData')) || {};
+            document.querySelector('h1').textContent = appData.appName || 'Meu App Android';
+            document.querySelector('.tagline').textContent = appData.tagline || 'Transforme sua rotina...';
+            document.querySelector('.description p').textContent = appData.description || 'Meu App Android é projetado para simplificar sua vida...';
+            document.querySelectorAll('.info li')[0].innerHTML = `<strong>Versão:</strong> ${appData.version || '1.2.3'}`;
+            document.querySelectorAll('.info li')[1].innerHTML = `<strong>Tamanho:</strong> ${appData.size || '25 MB'}`;
+            document.querySelectorAll('.info li')[2].innerHTML = `<strong>Compatibilidade:</strong> ${appData.compatibility || 'Android 6.0+'}`;
+            document.querySelectorAll('.info li')[3].innerHTML = `<strong>Desenvolvedor:</strong> ${appData.developer || 'xAI Team'}`;
+            document.querySelectorAll('.info li')[4].innerHTML = `<strong>Preço:</strong> ${appData.price || 'Gratuito (com compras no app)'}`;
+
+            // Atualizar link de download
+            const downloadLink = document.getElementById('downloadLink');
+            downloadLink.href = appData.appLink || '#';
+            if (appData.appFileName) {
+                downloadLink.textContent = `Baixar ${appData.appFileName}`;
+            }
+
+            // Atualizar capturas de tela
+            const screenshots = appData.screenshots ? appData.screenshots.split(',').map(url => url.trim()) : [];
+            const gallery = document.querySelector('.screenshot-gallery');
+            gallery.innerHTML = '';
+            screenshots.forEach((url, index) => {
+                const img = document.createElement('img');
+                img.src = url || `https://via.placeholder.com/200x400`;
+                img.alt = `Screenshot ${index + 1}`;
+                img.className = 'screenshot w-48 md:w-56 rounded-lg snap-center';
+                gallery.appendChild(img);
+            });
+        };
+
+        document.querySelectorAll('.screenshot').forEach(img => {
+            img.addEventListener('click', () => {
+                img.classList.toggle('scale-110');
+            });
+        });
+    </script>
+</body>
+</html>
