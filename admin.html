@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador - Meu App Android</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .form-container {
+            transition: all 0.3s ease;
+        }
+        .form-container:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        .input-field {
+            transition: border-color 0.3s ease;
+        }
+        .input-field:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-3xl w-full bg-white rounded-xl shadow-lg p-6 space-y-6 form-container">
+        <h1 class="text-3xl font-bold text-gray-800 text-center">Gerenciador do App</h1>
+        <p class="text-gray-600 text-center">Adicione ou edite as informações do aplicativo aqui.</p>
+
+        <!-- Formulário -->
+        <form id="appForm" class="space-y-4">
+            <!-- Nome do App -->
+            <div>
+                <label for="appName" class="block text-sm font-medium text-gray-700">Nome do Aplicativo</label>
+                <input type="text" id="appName" class="input-field mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="Meu App Android">
+            </div>
+
+            <!-- Tagline -->
+            <div>
+                <label for="tagline" class="block text-sm font-medium text-gray-700">Slogan</label>
+                <input type="text" id="tagline" class="input-field mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="Transforme sua rotina...">
+            </div>
+
+            <!-- Descrição -->
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700">Descrição</label>
+                <textarea id="description" class="input-field mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" rows="4" placeholder="Meu App Android é projetado para simplificar sua vida..."></textarea>
+            </div>
+
+            <!-- Capturas de Tela (URLs) -->
+            <div>
+                <label for="screenshots" class="block text-sm font-medium text-gray-700">Capturas de Tela (URLs separadas por vírgula)</label>
+                <input type="text" id="screenshots" class="input-field mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="https://exemplo.com/screenshot1.jpg, https://exemplo.com/screenshot2.jpg">
+            </div>
+
+            <!-- Informações Técnicas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="version" class="block text-sm font-medium text-gray-700">Versão</label>
+                    <input type="text" id="version" class="input-field mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="1.2.3">
+                </div>
+                <div>
+                    <label for="size" class="block text-sm font-medium text-gray-700">Tamanho</label>
+                    <input type="text" id="size" class="input-field mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="25 MB">
+                </div>
+                <div>
+                    <label for="compatibility" class="block text-sm font-medium text-gray-700">Compatibilidade</label>
+                    <input type="text" id="compatibility" class="input-field mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="Android 6.0+">
+                </div>
+                <div>
+                    <label for="developer" class="block text-sm font-medium text-gray-700">Desenvolvedor</label>
+                    <input type="text" id="developer" class="input-field mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="xAI Team">
+                </div>
+                <div>
+                    <label for="price" class="block text-sm font-medium text-gray-700">Preço</label>
+                    <input type="text" id="price" class="input-field mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="Gratuito (com compras no app)">
+                </div>
+            </div>
+
+            <!-- Botão de Salvar -->
+            <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-full font-semibold hover:bg-blue-700 transition-all">Salvar Informações</button>
+        </form>
+
+        <!-- Botão para Visualizar -->
+        <button id="previewBtn" class="w-full bg-gray-600 text-white py-3 rounded-full font-semibold hover:bg-gray-700 transition-all">Visualizar Página do App</button>
+    </div>
+
+    <!-- Script para Gerenciamento -->
+    <script>
+        const form = document.getElementById('appForm');
+        const previewBtn = document.getElementById('previewBtn');
+
+        // Carregar dados salvos ao abrir a página
+        window.onload = () => {
+            const savedData = JSON.parse(localStorage.getItem('appData')) || {};
+            document.getElementById('appName').value = savedData.appName || '';
+            document.getElementById('tagline').value = savedData.tagline || '';
+            document.getElementById('description').value = savedData.description || '';
+            document.getElementById('screenshots').value = savedData.screenshots || '';
+            document.getElementById('version').value = savedData.version || '';
+            document.getElementById('size').value = savedData.size || '';
+            document.getElementById('compatibility').value = savedData.compatibility || '';
+            document.getElementById('developer').value = savedData.developer || '';
+            document.getElementById('price').value = savedData.price || '';
+        };
+
+        // Salvar dados no localStorage ao enviar o formulário
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const appData = {
+                appName: document.getElementById('appName').value,
+                tagline: document.getElementById('tagline').value,
+                description: document.getElementById('description').value,
+                screenshots: document.getElementById('screenshots').value,
+                version: document.getElementById('version').value,
+                size: document.getElementById('size').value,
+                compatibility: document.getElementById('compatibility').value,
+                developer: document.getElementById('developer').value,
+                price: document.getElementById('price').value
+            };
+            localStorage.setItem('appData', JSON.stringify(appData));
+            alert('Informações salvas com sucesso!');
+        });
+
+        // Redirecionar ou abrir a página de exibição (simulação)
+        previewBtn.addEventListener('click', () => {
+            // Aqui você pode redirecionar para a página do app ou abri-la em uma nova aba
+            alert('Abrindo pré-visualização (simulação). Salve os dados e integre com a página do app.');
+            // Para integração real, você salvaria este script na mesma página ou passaria os dados via URL
+        });
+    </script>
+</body>
+</html>
